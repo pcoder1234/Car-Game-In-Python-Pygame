@@ -1,8 +1,8 @@
+# Importing modules: Pygame for actual game, sys for managing system, random to determine where the coin will appear, time for the in-game timer
 import pygame
 import sys
 import random
 import time
-import colorama
 
 # Initializing Pygame
 pygame.init()
@@ -10,13 +10,16 @@ pygame.init()
 # Setting up score
 score = 0
 
-# Setting up screen
+# Setting up screen dimensions
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
+# Setting up game window
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Car game")
 
+
+# Grass on outside
 screen.fill('#00FF00')
 
 # Set up text
@@ -28,10 +31,11 @@ elapsed_time = 0
 
 
 
-# Set Up Road
+# Set Up Road (just a gray rectangle)
 road_width = 600
 road_color = '#787878'
 road = pygame.Rect(SCREEN_WIDTH/2 - road_width/2, 0, road_width, SCREEN_HEIGHT)
+
 
 # Set up coin
 coin_height = 25
@@ -45,7 +49,7 @@ car = pygame.transform.scale(pygame.transform.rotate(pygame.image.load("car.png"
 car_rect = car.get_rect(midbottom=(SCREEN_WIDTH/2, SCREEN_HEIGHT - 50))
 car_speed = 5
 
-# Set Up FPS
+# Set Up FPS timer
 clock = pygame.time.Clock()
 
 running = True
@@ -57,6 +61,7 @@ while running:
     elapsed_time = current_time - start_time
     time_left = 60 - elapsed_time
     
+    # Check if user pressed the red X on top-right
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -87,6 +92,7 @@ while running:
         coin.y = 0 - coin_height
         coin.x = random.randint(100, 600)
     
+    # Checking if coin hits car and adding 1 point if so
     if coin.colliderect(car_rect):
         coin.y = 0 - coin_height
         coin.x = random.randint(100, 600)
@@ -99,6 +105,7 @@ while running:
         screen.blit(gameover_text, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
         pygame.time.delay(4000)
         
+        # Exiting the game and printing score on console
         running = False
         print('\n'*100)
         print(f'You got {score} points!')
@@ -109,6 +116,6 @@ while running:
     pygame.display.flip()
 
 
-
+# Ending the game at the end
 pygame.quit()
 sys.exit()
